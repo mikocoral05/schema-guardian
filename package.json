@@ -1,0 +1,45 @@
+{
+  "name": "schema-guardian",
+  "version": "1.0.0",
+  "description": "A TypeScript-first schema validator with built-in multilingual error messages and RTL-aware locale detection.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./locales": {
+      "types": "./dist/i18n/locales/index.d.ts",
+      "require": "./dist/i18n/locales/index.js",
+      "default": "./dist/i18n/locales/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run --pool=threads --no-file-parallelism",
+    "validate": "npm run typecheck && npm run test && npm run build"
+  },
+  "keywords": [
+    "validation",
+    "schema",
+    "typescript",
+    "i18n",
+    "rtl",
+    "forms"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.4"
+  }
+}
