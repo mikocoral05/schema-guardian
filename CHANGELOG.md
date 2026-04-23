@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/mikocoral05/schema-guardian/compare/v1.0.0...v1.1.0) (2026-04-23)
+
+
+### Features
+
+* retry initial release with Node 22 ([c85d285](https://github.com/mikocoral05/schema-guardian/commit/c85d2850514b9dba910a6116f24ad6d03f1676f6))
+
 # 1.0.0 (2026-04-23)
 
 
