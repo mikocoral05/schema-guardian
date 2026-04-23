@@ -1,3 +1,11 @@
+## [1.1.2](https://github.com/mikocoral05/schema-guardian/compare/v1.1.1...v1.1.2) (2026-04-23)
+
+
+### Bug Fixes
+
+* rename package to scoped name to avoid npm collision ([9010332](https://github.com/mikocoral05/schema-guardian/commit/9010332bd8926efab0c995d8b934135a81801ab3))
+* resolve merge conflict and apply scoped package name ([e073100](https://github.com/mikocoral05/schema-guardian/commit/e073100e4efdc0f8af490b12b680fc66a6526810))
+
 ## [1.1.1](https://github.com/mikocoral05/schema-guardian/compare/v1.1.0...v1.1.1) (2026-04-23)
 
 
