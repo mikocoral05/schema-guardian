@@ -1,6 +1,6 @@
 {
   "name": "@mikael_tenshio/schema-guardian",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "A TypeScript-first schema validator with built-in multilingual error messages and RTL-aware locale detection.",
   "type": "commonjs",
   "main": "./dist/index.js",
