@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/mikocoral05/schema-guardian/compare/v1.1.0...v1.1.1) (2026-04-23)
+
+
+### Bug Fixes
+
+* enable npm provenance for package publishing ([1dfe9ce](https://github.com/mikocoral05/schema-guardian/commit/1dfe9ce4a9d2e41e0214aaec8d62f28da0414bf9))
+
 # [1.1.0](https://github.com/mikocoral05/schema-guardian/compare/v1.0.0...v1.1.0) (2026-04-23)
 
 
