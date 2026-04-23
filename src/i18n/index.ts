@@ -1,4 +1,24 @@
-import { ar, en, fr, ja, tl } from './locales';
+import {
+  ar,
+  de,
+  en,
+  es,
+  fr,
+  he,
+  hi,
+  id,
+  it,
+  ja,
+  ko,
+  nl,
+  pt,
+  ru,
+  tl,
+  tr,
+  vi,
+  zhCN,
+  zhTW,
+} from './locales';
 import type {
   LocaleDefinition,
   LocaleDetectionOptions,
@@ -96,7 +116,29 @@ class I18nRegistry {
   private defaultLocale = 'en';
   private currentLocale: string | undefined = undefined;
 
-  constructor(initialLocales: readonly LocaleDefinition[] = [en, fr, ja, tl, ar]) {
+  constructor(
+    initialLocales: readonly LocaleDefinition[] = [
+      en,
+      de,
+      es,
+      fr,
+      he,
+      hi,
+      id,
+      it,
+      ja,
+      ko,
+      nl,
+      pt,
+      ru,
+      tl,
+      tr,
+      vi,
+      zhCN,
+      zhTW,
+      ar,
+    ],
+  ) {
     this.registerMany(initialLocales);
   }
 
@@ -252,4 +294,24 @@ export type {
   MessageValue,
   ResolvedLocale,
 } from './types';
-export { ar, en, fr, ja, tl } from './locales';
+export {
+  ar,
+  de,
+  en,
+  es,
+  fr,
+  he,
+  hi,
+  id,
+  it,
+  ja,
+  ko,
+  nl,
+  pt,
+  ru,
+  tl,
+  tr,
+  vi,
+  zhCN,
+  zhTW,
+} from './locales';

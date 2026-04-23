@@ -74,4 +74,16 @@ describe('StringSchema', () => {
       expect(result.error.message).toBe('This field must be a valid email address');
     }
   });
+
+  it('supports generic refinements', () => {
+    const schema = S.string()
+      .label('Username')
+      .refine((value) => value.startsWith('@'), 'Username must start with @');
+
+    const result = schema.safeParse('codex');
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.message).toBe('Username must start with @');
+    }
+  });
 });

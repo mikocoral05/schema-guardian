@@ -67,4 +67,43 @@ describe('i18n integration', () => {
       expect(result.error.message).toBe('Pangalan ay dapat may hindi bababa sa 5 character');
     }
   });
+
+  it('localizes enum errors', () => {
+    const result = S.enum(['basique', 'pro'] as const)
+      .label('Plan')
+      .safeParse('enterprise', {
+        locale: 'fr',
+      });
+
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.message).toBe(
+        "Plan doit être l'une des valeurs suivantes : basique, pro",
+      );
+    }
+  });
+
+  it('supports broader built-in locale aliases', () => {
+    const result = S.string().label('Nome').min(5).safeParse('hi', {
+      locale: 'pt-BR',
+    });
+
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.locale).toBe('pt');
+      expect(result.error.message).toBe('Nome deve ter pelo menos 5 caracteres');
+    }
+  });
+
+  it('supports additional RTL locales', () => {
+    const result = S.string().label('שם').min(5).safeParse('hi', {
+      locale: 'he',
+    });
+
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.dir).toBe('rtl');
+      expect(result.error.locale).toBe('he');
+    }
+  });
 });

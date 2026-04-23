@@ -1,8 +1,5 @@
-import type { LocaleDefinition, MessageContext } from '../types';
-
-function fieldLabel(context: MessageContext, fallback: string): string {
-  return context.label ?? fallback;
-}
+import type { LocaleDefinition } from '../types';
+import { fieldLabel, formatOptions } from './helpers';
 
 export const en: LocaleDefinition = {
   code: 'en',
@@ -15,8 +12,18 @@ export const en: LocaleDefinition = {
         `${fieldLabel(context, 'This field')} must be a ${context.expected ?? 'valid value'}`,
       objectType: (context) =>
         `${fieldLabel(context, 'This field')} must be an object`,
+      arrayType: (context) =>
+        `${fieldLabel(context, 'This field')} must be an array`,
       unknownKey: (context) =>
         `${fieldLabel(context, 'This field')} is not allowed`,
+      custom: (context) =>
+        `${fieldLabel(context, 'This field')} is invalid`,
+    },
+    array: {
+      min: (context) =>
+        `${fieldLabel(context, 'This field')} must contain at least ${context.minimum} items`,
+      max: (context) =>
+        `${fieldLabel(context, 'This field')} must contain at most ${context.maximum} items`,
     },
     string: {
       min: (context) =>
@@ -25,6 +32,10 @@ export const en: LocaleDefinition = {
         `${fieldLabel(context, 'This field')} must be at most ${context.maximum} characters`,
       email: (context) =>
         `${fieldLabel(context, 'This field')} must be a valid email address`,
+    },
+    enum: {
+      invalid: (context) =>
+        `${fieldLabel(context, 'This field')} must be one of: ${formatOptions(context)}`,
     },
     number: {
       min: (context) =>

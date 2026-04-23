@@ -1,8 +1,5 @@
-import type { LocaleDefinition, MessageContext } from '../types';
-
-function fieldLabel(context: MessageContext, fallback: string): string {
-  return context.label ?? fallback;
-}
+import type { LocaleDefinition } from '../types';
+import { fieldLabel, formatOptions } from './helpers';
 
 export const tl: LocaleDefinition = {
   code: 'tl',
@@ -16,8 +13,18 @@ export const tl: LocaleDefinition = {
         `${fieldLabel(context, 'Ang field na ito')} ay dapat isang ${context.expected ?? 'wastong halaga'}`,
       objectType: (context) =>
         `${fieldLabel(context, 'Ang field na ito')} ay dapat isang object`,
+      arrayType: (context) =>
+        `${fieldLabel(context, 'Ang field na ito')} ay dapat isang listahan`,
       unknownKey: (context) =>
         `Hindi pinapayagan ang ${fieldLabel(context, 'field na ito')}`,
+      custom: (context) =>
+        `${fieldLabel(context, 'Ang field na ito')} ay hindi wasto`,
+    },
+    array: {
+      min: (context) =>
+        `${fieldLabel(context, 'Ang field na ito')} ay dapat may hindi bababa sa ${context.minimum} item`,
+      max: (context) =>
+        `${fieldLabel(context, 'Ang field na ito')} ay dapat may hindi hihigit sa ${context.maximum} item`,
     },
     string: {
       min: (context) =>
@@ -26,6 +33,10 @@ export const tl: LocaleDefinition = {
         `${fieldLabel(context, 'Ang field na ito')} ay dapat may hindi hihigit sa ${context.maximum} character`,
       email: (context) =>
         `${fieldLabel(context, 'Ang field na ito')} ay dapat isang wastong email address`,
+    },
+    enum: {
+      invalid: (context) =>
+        `${fieldLabel(context, 'Ang field na ito')} ay dapat isa sa mga sumusunod: ${formatOptions(context)}`,
     },
     number: {
       min: (context) =>

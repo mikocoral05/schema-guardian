@@ -1,8 +1,5 @@
-import type { LocaleDefinition, MessageContext } from '../types';
-
-function fieldLabel(context: MessageContext, fallback: string): string {
-  return context.label ?? fallback;
-}
+import type { LocaleDefinition } from '../types';
+import { fieldLabel, formatOptions } from './helpers';
 
 export const ar: LocaleDefinition = {
   code: 'ar',
@@ -15,8 +12,18 @@ export const ar: LocaleDefinition = {
         `${fieldLabel(context, 'هذا الحقل')} يجب أن يكون ${context.expected ?? 'قيمة صالحة'}`,
       objectType: (context) =>
         `${fieldLabel(context, 'هذا الحقل')} يجب أن يكون كائنا`,
+      arrayType: (context) =>
+        `${fieldLabel(context, 'هذا الحقل')} يجب أن يكون قائمة`,
       unknownKey: (context) =>
         `${fieldLabel(context, 'هذا الحقل')} غير مسموح به`,
+      custom: (context) =>
+        `${fieldLabel(context, 'هذا الحقل')} غير صالح`,
+    },
+    array: {
+      min: (context) =>
+        `${fieldLabel(context, 'هذا الحقل')} يجب أن يحتوي على ${context.minimum} عناصر على الأقل`,
+      max: (context) =>
+        `${fieldLabel(context, 'هذا الحقل')} يجب ألا يحتوي على أكثر من ${context.maximum} عناصر`,
     },
     string: {
       min: (context) =>
@@ -25,6 +32,10 @@ export const ar: LocaleDefinition = {
         `${fieldLabel(context, 'هذا الحقل')} يجب ألا يزيد على ${context.maximum} أحرف`,
       email: (context) =>
         `${fieldLabel(context, 'هذا الحقل')} يجب أن يكون بريدا إلكترونيا صالحا`,
+    },
+    enum: {
+      invalid: (context) =>
+        `${fieldLabel(context, 'هذا الحقل')} يجب أن يكون واحدا من: ${formatOptions(context)}`,
     },
     number: {
       min: (context) =>

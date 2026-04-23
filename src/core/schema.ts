@@ -1,6 +1,7 @@
 import { i18n } from '../i18n';
 import type { MessageContext, ResolvedLocale } from '../i18n/types';
 import type {
+  EnumValue,
   ParseOptions,
   SafeParseResult,
   ValidationIssue,
@@ -22,6 +23,12 @@ interface IssueDetails {
   received?: string | undefined;
   minimum?: number | undefined;
   maximum?: number | undefined;
+  options?: readonly EnumValue[] | undefined;
+}
+
+interface SchemaRefinement<TValue> {
+  check: (value: TValue) => boolean;
+  message?: MessageOverride | undefined;
 }
 
 function titleCase(value: string): string {
@@ -49,6 +56,7 @@ function humanizePathSegment(segment: string | number): string | undefined {
 export abstract class Schema<TOutput, TParsed = Exclude<TOutput, undefined>> {
   protected isOptional = false;
   protected fieldLabel: string | undefined = undefined;
+  protected refinements: Array<SchemaRefinement<unknown>> = [];
 
   parse(value: unknown, options: ParseOptions | InternalParseOptions = {}): TOutput {
     const internal = this.toInternalOptions(options);
@@ -60,7 +68,9 @@ export abstract class Schema<TOutput, TParsed = Exclude<TOutput, undefined>> {
       throw this.createError('required', 'common.required', internal);
     }
 
-    return this.parseValue(value, internal) as unknown as TOutput;
+    const parsedValue = this.parseValue(value, internal);
+    this.runRefinements(parsedValue, internal);
+    return parsedValue as unknown as TOutput;
   }
 
   safeParse(
@@ -90,6 +100,15 @@ export abstract class Schema<TOutput, TParsed = Exclude<TOutput, undefined>> {
     return clone;
   }
 
+  refine(check: (value: TParsed) => boolean, message?: MessageOverride): this {
+    const clone = this.clone();
+    clone.refinements = [
+      ...this.refinements,
+      { check: check as (value: unknown) => boolean, message },
+    ];
+    return clone;
+  }
+
   protected abstract clone(): this;
 
   protected abstract parseValue(
@@ -100,6 +119,7 @@ export abstract class Schema<TOutput, TParsed = Exclude<TOutput, undefined>> {
   protected copyBaseStateTo<TSchema extends Schema<unknown, unknown>>(schema: TSchema): TSchema {
     schema.isOptional = this.isOptional;
     schema.fieldLabel = this.fieldLabel;
+    schema.refinements = [...this.refinements];
     return schema;
   }
 
@@ -142,6 +162,7 @@ export abstract class Schema<TOutput, TParsed = Exclude<TOutput, undefined>> {
       received: details.received,
       minimum: details.minimum,
       maximum: details.maximum,
+      options: details.options,
     };
   }
 
@@ -171,6 +192,14 @@ export abstract class Schema<TOutput, TParsed = Exclude<TOutput, undefined>> {
     return typeof value;
   }
 
+  private runRefinements(value: TParsed, options: InternalParseOptions): void {
+    for (const refinement of this.refinements) {
+      if (!refinement.check(value)) {
+        throw this.createError('custom', 'common.custom', options, {}, refinement.message);
+      }
+    }
+  }
+
   private createMessageContext(
     options: InternalParseOptions,
     details: IssueDetails,
@@ -182,6 +211,7 @@ export abstract class Schema<TOutput, TParsed = Exclude<TOutput, undefined>> {
       received: details.received,
       minimum: details.minimum,
       maximum: details.maximum,
+      options: details.options,
     };
   }
 

@@ -1,4 +1,4 @@
-import type { ValidationIssue } from '../types';
+import type { Infer, ValidationIssue } from '../types';
 import { ValidationError } from './error';
 import { Schema, type InternalParseOptions } from './schema';
 
@@ -6,18 +6,16 @@ type AnySchema = Schema<unknown, unknown>;
 
 export type ObjectShape = Record<string, AnySchema>;
 
-type InferSchema<TSchema> = TSchema extends Schema<infer TOutput> ? TOutput : never;
-
 type OptionalKeys<TShape extends ObjectShape> = {
-  [TKey in keyof TShape]: undefined extends InferSchema<TShape[TKey]> ? TKey : never;
+  [TKey in keyof TShape]: undefined extends Infer<TShape[TKey]> ? TKey : never;
 }[keyof TShape];
 
 type RequiredKeys<TShape extends ObjectShape> = Exclude<keyof TShape, OptionalKeys<TShape>>;
 
 export type ObjectOutput<TShape extends ObjectShape> = {
-  [TKey in RequiredKeys<TShape>]: Exclude<InferSchema<TShape[TKey]>, undefined>;
+  [TKey in RequiredKeys<TShape>]: Exclude<Infer<TShape[TKey]>, undefined>;
 } & {
-  [TKey in OptionalKeys<TShape>]?: Exclude<InferSchema<TShape[TKey]>, undefined>;
+  [TKey in OptionalKeys<TShape>]?: Exclude<Infer<TShape[TKey]>, undefined>;
 };
 
 export class ObjectSchema<

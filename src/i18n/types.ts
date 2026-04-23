@@ -1,4 +1,4 @@
-import type { PathSegment } from '../types';
+import type { EnumValue, PathSegment } from '../types';
 
 export type TextDirection = 'ltr' | 'rtl';
 
@@ -9,6 +9,7 @@ export interface MessageContext {
   received?: string | undefined;
   minimum?: number | undefined;
   maximum?: number | undefined;
+  options?: readonly EnumValue[] | undefined;
 }
 
 export type MessageValue = string | ((context: MessageContext) => string);
@@ -18,12 +19,21 @@ export interface ValidationMessages {
     required: MessageValue;
     invalidType: MessageValue;
     objectType: MessageValue;
+    arrayType: MessageValue;
     unknownKey: MessageValue;
+    custom: MessageValue;
+  };
+  array: {
+    min: MessageValue;
+    max: MessageValue;
   };
   string: {
     min: MessageValue;
     max: MessageValue;
     email: MessageValue;
+  };
+  enum: {
+    invalid: MessageValue;
   };
   number: {
     min: MessageValue;

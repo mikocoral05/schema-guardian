@@ -2,6 +2,7 @@
   "name": "schema-guardian",
   "version": "1.0.0",
   "description": "A TypeScript-first schema validator with built-in multilingual error messages and RTL-aware locale detection.",
+  "type": "commonjs",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -10,22 +11,39 @@
       "require": "./dist/index.js",
       "default": "./dist/index.js"
     },
+    "./i18n": {
+      "types": "./dist/i18n/index.d.ts",
+      "require": "./dist/i18n/index.js",
+      "default": "./dist/i18n/index.js"
+    },
     "./locales": {
       "types": "./dist/i18n/locales/index.d.ts",
       "require": "./dist/i18n/locales/index.js",
       "default": "./dist/i18n/locales/index.js"
     },
+    "./locales/*": {
+      "types": "./dist/i18n/locales/*.d.ts",
+      "require": "./dist/i18n/locales/*.js",
+      "default": "./dist/i18n/locales/*.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json",
     "test": "vitest run --pool=threads --no-file-parallelism",
-    "validate": "npm run typecheck && npm run test && npm run build"
+    "pack:check": "npm pack --dry-run --cache ./.npm-cache",
+    "validate": "npm run typecheck && npm run test && npm run build",
+    "prepack": "npm run validate"
   },
   "keywords": [
     "validation",
@@ -33,13 +51,34 @@
     "typescript",
     "i18n",
     "rtl",
-    "forms"
+    "forms",
+    "localization",
+    "internationalization",
+    "validator"
   ],
-  "author": "",
+  "author": "mikocoral05",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikocoral05/schema-guardian.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mikocoral05/schema-guardian/issues"
+  },
+  "homepage": "https://github.com/mikocoral05/schema-guardian#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@types/node": "^25.6.0",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.4"
+    "vitest": "^4.1.4",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.6",
+    "@semantic-release/npm": "^12.0.2",
+    "@semantic-release/release-notes-generator": "^14.1.0",
+    "semantic-release": "^25.0.3"
   }
 }
